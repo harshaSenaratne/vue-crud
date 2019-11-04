@@ -6,13 +6,14 @@
                 <label for="title">Pizza Title:</label>
                 <input type="text" name="title" v-model="title"> 
             </div>  
-            <div v-for="(ing, index) in ingredients" :key="index">
+            <div v-for="(ing, index) in ingredients" :key="index" class="field">
                 <label for="ingredient">
                     Ingredient:
                 </label>
                 <input type="text" name="ingredient" v-model="ingredients[index]">
-                
-            </div>
+            <i class="material-icons delete" @click="deleteIng(ing)">delete</i>
+ 
+             </div>
               <div class="field add-ingredient">
                   <label for="add-ingredient">Add Ingredient </label>
                     <input type="text" name="add-ingredient" @keydown.tab.prevent="addIng" v-model="another">
@@ -61,8 +62,13 @@ export default {
                    ingredients:this.ingredients,
                    slug:this.slug
                     
+               }).then(()=>{
+                   this.$router.push({
+                     name:'Index' 
+                   })
+               }).catch(err=>{
+                   console.log(err)
                })
-
                
             }
             else{
@@ -80,6 +86,12 @@ export default {
             else{
                 this.feedback="You must enter a value to add an ingredient"
             }
+        },
+
+        deleteIng(ing){
+            this.ingredients = this.ingredients.filter(ingredient=>{
+                return ingredient != ing
+            })
         }
     },
 }
@@ -97,5 +109,15 @@ export default {
  }
  .add-smoothie .field{
      margin: 20px auto;
+ }
+
+ .add-pizza .delete{
+     /* position: absolute;
+     right: 0;
+     bottom: 16px;
+     
+     font-size: 1.4em;
+     cursor: pointer; */
+color: #aaa;
  }
 </style>
